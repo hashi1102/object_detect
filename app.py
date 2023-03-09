@@ -11,7 +11,11 @@ frameST = st.empty()
 param=st.sidebar.slider('chose your value')
 
 while True:
-    ret, frame = cap.read()
+    #ret, frame = cap.read()
+    _, img = cap.read()
+    time.sleep(1)
+    img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    image_loc.image(img)
     # Stop the program if reached end of video
     if not ret:
         print("Done processing !!!")
