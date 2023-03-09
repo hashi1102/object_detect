@@ -8,10 +8,10 @@ from model import predict
 
 st.markdown("# Camera Application")
 
-device = '0'
+device = 0
 with st.spinner():
-    if device.isnumeric():
-        device = int(device)
+#     if device.isnumeric():
+#         device = int(device)
     cap = cv2.VideoCapture(device)
 
     image_loc = st.empty()
