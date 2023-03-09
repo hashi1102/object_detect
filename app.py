@@ -8,7 +8,10 @@ from model import predict
 
 st.markdown("# Camera Application")
 
-device = '0'
+device = user_input = st.text_input("input your video/camera device", "0")
+if device.isnumeric():
+    device = int(device)
+
 with st.spinner():
     if device.isnumeric():
         device = int(device)
