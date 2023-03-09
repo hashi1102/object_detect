@@ -18,7 +18,7 @@ with st.spinner():
     with st.empty():
         while cap.isOpened:
             ret, img = cap.read()
-            time.sleep(1)
+            time.sleep(2)
             img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
             image_loc.image(img)
 
