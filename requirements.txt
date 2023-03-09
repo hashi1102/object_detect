@@ -3,4 +3,4 @@ torch==1.13.1
 torchvision==0.14.1
 Pillow
 matplotlib
-opencv-python==4.7.0.72
+opencv-python-headless==4.6.0.66
