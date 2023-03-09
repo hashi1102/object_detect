@@ -5,7 +5,7 @@ from model import predict
 
 @st.cache(allow_output_mutation=True)
 def get_cap():
-    return cv.VideoCapture(0)
+    return cv2.VideoCapture(0)
 
 cap = get_cap()
 
