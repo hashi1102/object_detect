@@ -1,47 +1,32 @@
-import streamlit as st
-import cv2
-import time
-from PIL import Image
-from model import predict
-
-
-
-st.markdown("# Camera Application")
-
-device = '0'
-with st.spinner():
+def main():
+    st.markdown("# Image Classification app using Streamlit")
+    st.markdown("model = MobileNetV2")
+    device = user_input = st.text_input("input your video/camera device", "0")
     if device.isnumeric():
         device = int(device)
     cap = cv2.VideoCapture(device)
-
+    classifier = Classifier(top_k=5)
+    label_names_st = st.empty()
+    scores_st = st.empty()
     image_loc = st.empty()
-    with st.empty():
-        while cap.isOpened:
-            ret, img = cap.read()
-            time.sleep(2)
-            img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_RGBA2BGRA))
-            image_loc.image(img)
 
-            if img is not None:
-
-                # # 予測
-                results = predict(img)
-
-                # 結果の表示
-                n_top = 3  # 確率が高い順に3位まで返す
-                for result in results[:n_top]:
-                    r = "判定結果 : " + str(round(result[2]*100, 2)) + "%の確率で" + result[0] + "です。"
-                    st.write(f'{r}')
-                if cv2.waitKey(1) & 0xFF == ord("q"):
-                    break
-
-        cap.release()
+    while cap.isOpened():
+        _, frame = cap.read()
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        result = classifier.predict(frame)
+        labels = []
+        scores = []
+        for (_, label, prob) in result[0]:
+            labels.append(f"{label: <16}")
+            s = f"{100*prob:.2f}[%]"
+            scores.append(f"{s: <16}")
+        label_names_st.text(",".join(labels))
+        scores_st.text(",".join(scores))
+        image_loc.image(frame)
+        if cv2.waitKey() & 0xFF == ord("q"):
+            break
+    cap.release()
 
 
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+if __name__ == "__main__":
+    main()
