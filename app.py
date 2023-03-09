@@ -12,7 +12,7 @@ device = '0'
 with st.spinner():
     if device.isnumeric():
         device = int(device)
-    cap = cv2.VideoCapture(-1)
+    cap = cv2.VideoCapture(device)
 
     image_loc = st.empty()
     with st.empty():
@@ -37,6 +37,14 @@ with st.spinner():
 
         cap.release()
 
+        
+webrtc_streamer(
+    key="example",
+    video_frame_callback=callback,
+    rtc_configuration={  # Add this line
+        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+    }
+)
 
 hide_streamlit_style = """
             <style>
