@@ -32,3 +32,5 @@ def get_cap():
 
     cap.release()
 
+if __name__ == "__main__":
+    get_cap()
