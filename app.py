@@ -5,19 +5,11 @@ import time
 from PIL import Image
 from model import predict
 
-st.title("My first Streamlit app")
-st.write("Hello, world")
+st.title("Camera app")
 
 
 def callback(frame):
-    st.markdown("# Camera Application")
-
-    device = '0'
     with st.spinner():
-#         if device.isnumeric():
-#             device = int(device)
-#         cap = cv2.VideoCapture(device)
-
         image_loc = st.empty()
         with st.empty():
             while cap.isOpened:
@@ -27,8 +19,8 @@ def callback(frame):
                 img = cv2.cvtColor(cv2.Canny(img, 100, 200), cv2.COLOR_GRAY2BGR)
                 
                 
-                img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-                image_loc.image(img)
+#                 img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+#                 image_loc.image(img)
 
                 if img is not None:
 
@@ -43,16 +35,16 @@ def callback(frame):
                     if cv2.waitKey(1) & 0xFF == ord("q"):
                         break
 
-#             cap.release()
 
 
-    hide_streamlit_style = """
-                <style>
-                #MainMenu {visibility: hidden;}
-                footer {visibility: hidden;}
-                </style>
-                """
-    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
     
     
 
