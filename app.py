@@ -1,5 +1,5 @@
 import streamlit as st
-import opencv-python as cv2
+import cv2
 import time
 from PIL import Image
 from model import predict
