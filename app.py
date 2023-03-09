@@ -1,7 +1,7 @@
 import streamlit as st
 import cv2
 import time
-from PIL import Image
+import Image
 from model import predict
 
 
