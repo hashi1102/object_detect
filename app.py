@@ -3,7 +3,7 @@ import time
 from PIL import Image
 from model import predict
 
-@st.cache(allow_output_mutation=True)
+# @st.cache(allow_output_mutation=True)
 def get_cap():
     return cv2.VideoCapture(0)
 
