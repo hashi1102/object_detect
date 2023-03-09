@@ -14,13 +14,13 @@ with st.spinner():
         device = int(device)
     cap = cv2.VideoCapture(device)
 
-#     image_loc = st.empty()
-#     with st.empty():
-#         while cap.isOpened:
-#             ret, img = cap.read()
-#             time.sleep(2)
+    image_loc = st.empty()
+    with st.empty():
+        while cap.isOpened:
+            ret, img = cap.read()
+            time.sleep(2)
 #             img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-#             image_loc.image(img)
+            image_loc.image(img)
 
 #             if img is not None:
 
