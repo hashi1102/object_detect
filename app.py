@@ -1,50 +1,18 @@
 import streamlit as st
+from streamlit_webrtc import webrtc_streamer
+import av
 import cv2
-import time
-from PIL import Image
-from model import predict
+
+st.title("My first Streamlit app")
+st.write("Hello, world")
 
 
+def callback(frame):
+    img = frame.to_ndarray(format="bgr24")
 
-st.markdown("# Camera Application")
+    img = cv2.cvtColor(cv2.Canny(img, 100, 200), cv2.COLOR_GRAY2BGR)
 
-device = user_input = st.text_input("input your video/camera device", "0")
-if device.isnumeric():
-    device = int(device)
-
-with st.spinner():
-    if device.isnumeric():
-        device = int(device)
-    cap = cv2.VideoCapture(device)
-
-    image_loc = st.empty()
-    with st.empty():
-        while cap.isOpened:
-            _, img0 = cap.read()
-            time.sleep(1)
-            img = Image.fromarray(cv2.cvtColor(img0, cv2.COLOR_BGR2RGB))
-            image_loc.image(img)
-
-            if img is not None:
-
-                # # 予測
-                results = predict(img)
-
-                # 結果の表示
-                n_top = 3  # 確率が高い順に3位まで返す
-                for result in results[:n_top]:
-                    r = "判定結果 : " + str(round(result[2]*100, 2)) + "%の確率で" + result[0] + "です。"
-                    st.write(f'{r}')
-                if cv2.waitKey(1) & 0xFF == ord("q"):
-                    break
-
-        cap.release()
+    return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+webrtc_streamer(key="example", video_frame_callback=callback)
