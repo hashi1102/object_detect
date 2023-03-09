@@ -1,6 +1,6 @@
 def main():
-    st.markdown("# Image Classification app using Streamlit")
-    st.markdown("model = MobileNetV2")
+#     st.markdown("# Image Classification app using Streamlit")
+#     st.markdown("model = MobileNetV2")
     device = user_input = st.text_input("input your video/camera device", "0")
     if device.isnumeric():
         device = int(device)
