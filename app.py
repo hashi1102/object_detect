@@ -1,5 +1,7 @@
-import streamlit as st
-import cv2 as cv
+import cv2
+import time
+from PIL import Image
+from model import predict
 
 @st.cache(allow_output_mutation=True)
 def get_cap():
