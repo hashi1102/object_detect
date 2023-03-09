@@ -32,8 +32,8 @@ def callback(frame):
                 for result in results[:n_top]:
                     r = "判定結果 : " + str(round(result[2]*100, 2)) + "%の確率で" + result[0] + "です。"
                     st.write(f'{r}')
-                if cv2.waitKey(1) & 0xFF == ord("q"):
-                    break
+#                 if cv2.waitKey(1) & 0xFF == ord("q"):
+#                     break
 
 
 
