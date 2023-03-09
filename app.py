@@ -8,7 +8,7 @@ from model import predict
 
 st.markdown("# Camera Application")
 
-device = '-1'
+device = '0'
 with st.spinner():
     if device.isnumeric():
         device = int(device)
