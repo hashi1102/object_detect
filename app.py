@@ -9,10 +9,11 @@ from model import predict
 st.markdown("# Camera Application")
 
 device = 0
+cap = cv2.VideoCapture(device)
 with st.spinner():
 #     if device.isnumeric():
 #         device = int(device)
-    cap = cv2.VideoCapture(device)
+    
 
     image_loc = st.empty()
     with st.empty():
@@ -35,7 +36,7 @@ with st.spinner():
                 if cv2.waitKey(1) & 0xFF == ord("q"):
                     break
 
-        cap.release()
+cap.release()
 
 
 hide_streamlit_style = """
