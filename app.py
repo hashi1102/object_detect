@@ -17,9 +17,9 @@ with st.spinner():
     image_loc = st.empty()
     with st.empty():
         while cap.isOpened:
-            _, img = cap.read()
+            _, img0 = cap.read()
             time.sleep(1)
-            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            img = Image.fromarray(cv2.cvtColor(img0, cv2.COLOR_BGR2RGB))
             image_loc.image(img)
 
             if img is not None:
