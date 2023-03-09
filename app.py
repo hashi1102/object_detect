@@ -19,7 +19,7 @@ with st.spinner():
         while cap.isOpened:
             ret, img = cap.read()
             time.sleep(2)
-            img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+            img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_RGBA2BGRA))
             image_loc.image(img)
 
             if img is not None:
