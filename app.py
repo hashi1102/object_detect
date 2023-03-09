@@ -12,7 +12,7 @@ device = 0
 with st.spinner():
 #     if device.isnumeric():
 #         device = int(device)
-    cap = cv2.VideoCapture(device, cv2.CAP_DSHOW)
+    cap = cv2.VideoCapture(device)
 
     image_loc = st.empty()
     with st.empty():
