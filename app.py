@@ -5,6 +5,15 @@ from PIL import Image
 from model import predict
 
 
+webrtc_streamer(
+    key="example",
+    video_frame_callback=callback,
+    rtc_configuration={  # Add this line
+        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+    }
+)
+
+
 
 st.markdown("# Camera Application")
 
@@ -38,13 +47,6 @@ with st.spinner():
         cap.release()
 
         
-webrtc_streamer(
-    key="example",
-    video_frame_callback=callback,
-    rtc_configuration={  # Add this line
-        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-    }
-)
 
 hide_streamlit_style = """
             <style>
