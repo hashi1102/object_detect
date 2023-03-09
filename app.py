@@ -12,28 +12,28 @@ def callback(frame):
     with st.spinner():
         image_loc = st.empty()
         with st.empty():
-            while cap.isOpened:
-                _, img = cap.read()
-                time.sleep(1)
-                img = frame.to_ndarray(format="bgr24")
-                img = cv2.cvtColor(cv2.Canny(img, 100, 200), cv2.COLOR_GRAY2BGR)
-                
-                
+#             while cap.isOpened:
+#                 _, img = cap.read()
+            time.sleep(1)
+            img = frame.to_ndarray(format="bgr24")
+            img = cv2.cvtColor(cv2.Canny(img, 100, 200), cv2.COLOR_GRAY2BGR)
+
+
 #                 img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
 #                 image_loc.image(img)
 
-                if img is not None:
+            if img is not None:
 
-                    # # 予測
-                    results = predict(img)
+                # # 予測
+                results = predict(img)
 
-                    # 結果の表示
-                    n_top = 3  # 確率が高い順に3位まで返す
-                    for result in results[:n_top]:
-                        r = "判定結果 : " + str(round(result[2]*100, 2)) + "%の確率で" + result[0] + "です。"
-                        st.write(f'{r}')
-                    if cv2.waitKey(1) & 0xFF == ord("q"):
-                        break
+                # 結果の表示
+                n_top = 3  # 確率が高い順に3位まで返す
+                for result in results[:n_top]:
+                    r = "判定結果 : " + str(round(result[2]*100, 2)) + "%の確率で" + result[0] + "です。"
+                    st.write(f'{r}')
+                if cv2.waitKey(1) & 0xFF == ord("q"):
+                    break
 
 
 
