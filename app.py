@@ -1,32 +1,19 @@
-def main():
-#     st.markdown("# Image Classification app using Streamlit")
-#     st.markdown("model = MobileNetV2")
-    device = user_input = st.text_input("input your video/camera device", "0")
-    if device.isnumeric():
-        device = int(device)
-    cap = cv2.VideoCapture(device)
-    classifier = Classifier(top_k=5)
-    label_names_st = st.empty()
-    scores_st = st.empty()
-    image_loc = st.empty()
+import streamlit as st
+from streamlit_webrtc import webrtc_streamer
+import cv2
+import av #strealing video library
 
-    while cap.isOpened():
-        _, frame = cap.read()
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        result = classifier.predict(frame)
-        labels = []
-        scores = []
-        for (_, label, prob) in result[0]:
-            labels.append(f"{label: <16}")
-            s = f"{100*prob:.2f}[%]"
-            scores.append(f"{s: <16}")
-        label_names_st.text(",".join(labels))
-        scores_st.text(",".join(scores))
-        image_loc.image(frame)
-        if cv2.waitKey() & 0xFF == ord("q"):
-            break
-    cap.release()
+st.title('Streamlit App Test')
+st.write('Gray Scale')
 
+#Class
+class VideoProcessor:
+    def recv(self,frame):
 
-if __name__ == "__main__":
-    main()
+        img = frame.to_ndarray(format = 'bgr24')
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        img = av.VideoFrame.from_ndarray(img, format='gray')
+
+        return img
+
+webrtc_streamer(key='example', video_processor_factory=VideoProcessor)
