@@ -2,6 +2,7 @@ import streamlit as st
 from streamlit_webrtc import webrtc_streamer
 import cv2
 import time
+import av
 from PIL import Image
 from model import predict
 
@@ -34,6 +35,7 @@ def callback(frame):
                 st.write(f'{r}')
 #                 if cv2.waitKey(1) & 0xFF == ord("q"):
 #                     break
+    return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 
 webrtc_streamer(key="example", video_frame_callback=callback)
