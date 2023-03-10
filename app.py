@@ -1,47 +1,32 @@
 import streamlit as st
+from streamlit_webrtc import webrtc_streamer
+import av
 import cv2
-import time
-from PIL import Image
-from model import predict
+
+st.title("My first Streamlit app")
+st.write("Hello, world")
 
 
+class VideoProcessor:
+    def __init__(self) -> None:
+        self.threshold1 = 100
+        self.threshold2 = 200
 
-st.markdown("# Camera Application")
+    def recv(self, frame):
+        img = frame.to_ndarray(format="bgr24")
 
-device = '0'
-with st.spinner():
-    if device.isnumeric():
-        device = int(device)
-    cap = cv2.VideoCapture(device)
+        img = cv2.cvtColor(cv2.Canny(img, self.threshold1, self.threshold2), cv2.COLOR_GRAY2BGR)
 
-    image_loc = st.empty()
-    with st.empty():
-        while cap.isOpened:
-            _, img = cap.read()
-            time.sleep(1)
-            img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
-            image_loc.image(img)
-
-            if img is not None:
-
-                # # 予測
-                results = predict(img)
-
-                # 結果の表示
-                n_top = 3  # 確率が高い順に3位まで返す
-                for result in results[:n_top]:
-                    r = "判定結果 : " + str(round(result[2]*100, 2)) + "%の確率で" + result[0] + "です。"
-                    st.write(f'{r}')
-                if cv2.waitKey(1) & 0xFF == ord("q"):
-                    break
-
-        cap.release()
+        return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+ctx = webrtc_streamer(
+    key="example",
+    video_processor_factory=VideoProcessor,
+    rtc_configuration={
+        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+    }
+)
+if ctx.video_processor:
+    ctx.video_processor.threshold1 = st.slider("Threshold1", min_value=0, max_value=1000, step=1, value=100)
+    ctx.video_processor.threshold2 = st.slider("Threshold2", min_value=0, max_value=1000, step=1, value=200)
