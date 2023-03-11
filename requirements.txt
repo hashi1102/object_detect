@@ -6,4 +6,3 @@ matplotlib
 opencv-python-headless==4.7.0.72
 streamlit-webrtc
 numpy
-Thread
