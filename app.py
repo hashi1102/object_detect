@@ -35,11 +35,17 @@ threshold2 = st.slider("Threshold2", min_value=0, max_value=1000, step=1, value=
 
 
 def callback(frame):
-    img = frame.to_ndarray(format="bgr24")
+    cap = cv2.VideoCapture(0)
+    with st.empty():
+    while cap.isOpened:
+        _, img = cap.read()
+        time.sleep(1)
+        img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        
+    
 
-    img = cv2.cvtColor(cv2.Canny(img, threshold1, threshold2), cv2.COLOR_GRAY2BGR)
-
-    return cv2.imshow('',img)
+    return image_loc.image(img)
+    cap.release()
 
 
 webrtc_streamer(
