@@ -1,18 +1,25 @@
 import streamlit as st
-from streamlit_webrtc import webrtc_streamer
-import av
 import cv2
+import time
+from PIL import Image
 
-st.title("My first Streamlit app")
-st.write("Hello, world")
+st.markdown("# Camera Application")
 
+device = user_input = st.text_input("input your video/camera device", "0")
+if device.isnumeric():
+    # e.g. "0" -> 0
+    device = int(device)
 
-def callback(frame):
-    img = frame.to_ndarray(format="bgr24")
+cap = cv2.VideoCapture(device)
 
-    img = cv2.cvtColor(cv2.Canny(img, 100, 200), cv2.COLOR_GRAY2BGR)
+image_loc = st.empty()
+while cap.isOpened:
+    ret, img = cap.read()
+    time.sleep(0.01)
+    img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    image_loc.image(img)
 
-    return av.VideoFrame.from_ndarray(img, format="bgr24")
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
 
-
-webrtc_streamer(key="example", video_frame_callback=callback)
+cap.release()
