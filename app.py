@@ -1,10 +1,10 @@
 import streamlit as st
 import cv2 as cv
+from PIL import Image
 
 cap = cv.VideoCapture(0)
 
 frameST = st.empty()
-param=st.sidebar.slider('chose your value')
 
 while True: 
     ret, frame = cap.read()
@@ -16,4 +16,5 @@ while True:
         cap.release()
         break
 
-    frameST.image(frame, channels="BGR")
+    #frameST.image(frame, channels="BGR")
+    image_loc.image(frame)
