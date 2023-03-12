@@ -9,7 +9,8 @@ frameST = st.empty()
 while True: 
     with st.spinner():
         ret, frame = cap.read()
-        img = Image.fromarray(cv.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        #img = Image.fromarray(cv.cvtColor(frame, cv2.COLOR_BGR2RGB))
+        image_loc.image(frane)
         # Stop the program if reached end of video
         if not ret:
             print("Done processing !!!")
@@ -18,5 +19,4 @@ while True:
             cap.release()
             break
 
-        #frameST.image(frame, channels="BGR")
-        image_loc.image(img)
+        frameST.image(frame, channels="BGR")
