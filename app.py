@@ -1,20 +1,59 @@
+#ライブラリ
 import streamlit as st
-import torch
+import pandas as pd
 import numpy as np
+import cv2
+import numpy as np
+import pandas as pd
+import re
+import os
+import matplotlib.pyplot as plt
+from sklearn import preprocessing
+from PIL import Image
 
-img_file_buffer = st.camera_input("Take a picture")
 
-if img_file_buffer is not None:
-    # To read image file buffer as a 3D uint8 tensor with PyTorch:
-    bytes_data = img_file_buffer.getvalue()
-    torch_img = torch.ops.image.decode_image(
-        torch.from_numpy(np.frombuffer(bytes_data, np.uint8)), 3
-    )
 
-    # Check the type of torch_img:
-    # Should output: <class 'torch.Tensor'>
-    st.write(type(torch_img))
+from feat import Detector
+# rf: https://py-feat.org/content/intro.html#available-models
+face_model = "retinaface"
+landmark_model = "mobilenet"
+au_model = "svm"
+emotion_model = "resmasknet"
+detector = Detector(
+    face_model=face_model,
+    landmark_model=landmark_model,
+    au_model=au_model,
+    emotion_model=emotion_model
+)
+from feat.utils import get_test_data_path
 
-    # Check the shape of torch_img:
-    # Should output shape: torch.Size([channels, height, width])
-    st.write(torch_img.shape)
+
+
+
+
+#本編  
+st.title("Face emotion app")
+
+img_source = st.radio("画像のソースを選択してください。",
+                              ("画像をアップロード", "カメラで撮影"))
+if img_source == "カメラで撮影":
+  img_file_buffer = st.camera_input("カメラで撮影")
+elif img_source == "画像をアップロード":
+  img_file_buffer = st.file_uploader("ファイルを選択")
+else:
+    pass
+
+
+
+
+  
+if img_file_buffer :
+  img_file_buffer_2 = Image.open(img_file_buffer)
+  img_file = np.array(img_file_buffer_2)
+  cv2.imwrite('temporary.jpg', img_file)
+  image_prediction = detector.detect_image("temporary.jpg")
+  image_prediction = image_prediction[["anger", "disgust", "fear", "happiness", "sadness", "surprise", "neutral"]]
+  emotion = image_prediction.idxmax(axis = 1)[0]
+
+  st.markdown("#### あなたの表情は")
+  st.markdown("### {}です".format(emotion))
