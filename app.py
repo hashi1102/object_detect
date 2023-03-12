@@ -1,7 +1,7 @@
 import streamlit as st
 import cv2 as cv
 
-cap = cv.VideoCapture(0)
+cap = cv.VideoCapture()
 
 frameST = st.empty()
 param=st.sidebar.slider('chose your value')
