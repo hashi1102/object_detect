@@ -16,4 +16,4 @@ class VideoProcessor:
 
         return img
 
-webrtc_streamer(key='example', video_processor_factory=VideoProcessor, video_frame_callback=recv)
+webrtc_streamer(key='example', video_processor_factory=VideoProcessor)
