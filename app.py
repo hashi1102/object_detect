@@ -10,7 +10,7 @@ st.markdown("# Camera Application")
 
 
 with st.spinner():
-    cap = cv2.VideoCapture()
+    cap = cv2.VideoCapture(0)
 
     image_loc = st.empty()
     with st.empty():
