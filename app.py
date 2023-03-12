@@ -11,7 +11,7 @@ st.markdown("# Camera Application")
 
 with st.spinner():
     cap = cv2.VideoCapture(0)
-    _, img = cap.read()
+    img = st.camera_input()
     image_loc.image(img)
 
 #     image_loc = st.empty()
