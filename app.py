@@ -1,27 +1,24 @@
 import streamlit as st
 import cv2
 
-def main():
-    st.title("Webカメラでストリーム再生")
 
-    cap = cv2.VideoCapture(0)
+st.title("Webカメラでストリーム再生")
 
-    if not cap.isOpened():
-        st.error("カメラを開けません")
+cap = cv2.VideoCapture(0)
 
-    while True:
-        ret, frame = cap.read()
+if not cap.isOpened():
+    st.error("カメラを開けません")
 
-        if not ret:
-            st.error("フレームを読み込めません")
+while True:
+    ret, frame = cap.read()
 
-        # OpenCVのBGR形式からRGB形式に変換
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    if not ret:
+        st.error("フレームを読み込めません")
 
-        # Streamlitでフレームを表示
-        st.image(frame, channels="RGB")
+    # OpenCVのBGR形式からRGB形式に変換
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    cap.release()
+    # Streamlitでフレームを表示
+    st.image(frame, channels="RGB")
 
-if __name__ == "__main__":
-    main()
+cap.release()
