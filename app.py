@@ -14,6 +14,7 @@ def callback(frame):
     img = frame.to_ndarray(format="bgr24")
 
     img = cv2.cvtColor(cv2.Canny(img, threshold1, threshold2), cv2.COLOR_GRAY2BGR)
+    st.image(img)
 
     return av.VideoFrame.from_ndarray(img, format="bgr24")
 
