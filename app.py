@@ -1,28 +1,19 @@
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer
-import av
 import cv2
+import av #strealing video library
 
-st.title("My first Streamlit app")
-st.write("Hello, world")
+st.title('Streamlit App Test')
+st.write('Gray Scale')
 
-threshold1 = st.slider("Threshold1", min_value=0, max_value=1000, step=1, value=100)
-threshold2 = st.slider("Threshold2", min_value=0, max_value=1000, step=1, value=200)
+#Class
+class VideoProcessor:
+    def recv(self,frame):
 
+        img = frame.to_ndarray(format = 'bgr24')
+        img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
+        img = av.VideoFrame.from_ndarray(img, format='gray')
 
-def callback(frame):
-    img = frame.to_ndarray(format="bgr24")
+        return img
 
-    img = cv2.cvtColor(cv2.Canny(img, threshold1, threshold2), cv2.COLOR_GRAY2BGR)
-    st.image(img)
-
-    return av.VideoFrame.from_ndarray(img, format="bgr24")
-
-
-webrtc_streamer(
-    key="example",
-    video_frame_callback=callback,
-    rtc_configuration={  # Add this line
-        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-    }
-)
+webrtc_streamer(key='example', video_processor_factory=VideoProcessor)
