@@ -6,8 +6,8 @@ cap = cv.VideoCapture(0)
 
 frameST = st.empty()
 
-while True: 
-    with st.spinner():
+with st.spinner():
+    while True: 
         ret, frame = cap.read()
         #img = Image.fromarray(cv.cvtColor(frame, cv2.COLOR_BGR2RGB))
         st.image(frame)
