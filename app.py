@@ -5,23 +5,43 @@ from PIL import Image
 from model import predict
 
 
-st.title("Webカメラでストリーム再生")
 
-cap = cv2.VideoCapture(0)
+st.markdown("# Camera Application")
 
-if not cap.isOpened():
-    st.error("カメラを開けません")
+device = '0'
+with st.spinner():
+    if device.isnumeric():
+        device = int(device)
+    cap = cv2.VideoCapture(device)
 
-while True:
-    ret, frame = cap.read()
+    image_loc = st.empty()
+    with st.empty():
+        while cap.isOpened:
+            _, img = cap.read()
+            time.sleep(1)
+            img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+            image_loc.image(img)
 
-    if not ret:
-        st.error("フレームを読み込めません")
+            if img is not None:
 
-    # OpenCVのBGR形式からRGB形式に変換
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                # # 予測
+                results = predict(img)
 
-    # Streamlitでフレームを表示
-    st.image(frame, channels="RGB")
+                # 結果の表示
+                n_top = 3  # 確率が高い順に3位まで返す
+                for result in results[:n_top]:
+                    r = "判定結果 : " + str(round(result[2]*100, 2)) + "%の確率で" + result[0] + "です。"
+                    st.write(f'{r}')
+                if cv2.waitKey(1) & 0xFF == ord("q"):
+                    break
 
-cap.release()
+        cap.release()
+
+
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
