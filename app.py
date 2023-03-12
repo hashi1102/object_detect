@@ -11,7 +11,7 @@ while True:
     # Stop the program if reached end of video
     if not ret:
         print("Done processing !!!")
-        cv.waitKey(3000)
+        #cv.waitKey(3000)
         # Release device
         cap.release()
         break
