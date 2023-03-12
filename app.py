@@ -1,20 +1,25 @@
 import streamlit as st
-import cv2 as cv
+import cv2
+import time
 from PIL import Image
 
-cap = cv.VideoCapture(0)
+st.markdown("# Camera Application")
 
-frameST = st.empty()
+device = user_input = st.text_input("input your video/camera device", "0")
+if device.isnumeric():
+    # e.g. "0" -> 0
+    device = int(device)
 
-with st.spinner():
-    while True: 
-        ret, frame = cap.read()
-        # Stop the program if reached end of video
-        if not ret:
-            print("Done processing !!!")
-            #cv.waitKey(3000)
-            # Release device
-            cap.release()
-            break
+cap = cv2.VideoCapture(device)
 
-        frameST.image(frame, channels="BGR")
+image_loc = st.empty()
+while cap.isOpened:
+    ret, img = cap.read()
+    time.sleep(0.01)
+    img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    image_loc.image(img)
+
+    if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
+
+cap.release()
