@@ -1,12 +1,27 @@
 import streamlit as st
-import numpy as np
 import cv2
 
+def main():
+    st.title("Webカメラでストリーム再生")
 
-st.title("Streamlit + OpenCV Sample")
+    cap = cv2.VideoCapture(0)
 
+    if not cap.isOpened():
+        st.error("カメラを開けません")
 
-img = np.zeros((500, 500, 3), np.uint8)
-cv2.rectangle(img, (100, 100), (400, 400), color=(255, 0, 0), thickness=-1)
+    while True:
+        ret, frame = cap.read()
 
-st.image(img)
+        if not ret:
+            st.error("フレームを読み込めません")
+
+        # OpenCVのBGR形式からRGB形式に変換
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # Streamlitでフレームを表示
+        st.image(frame, channels="RGB")
+
+    cap.release()
+
+if __name__ == "__main__":
+    main()
