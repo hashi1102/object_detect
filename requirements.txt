@@ -8,6 +8,3 @@ streamlit-webrtc
 numpy
 mediapipe
 scikit-learn
-py-feat
-opencv-python-headless==4.6.0.66
-streamlit==1.12.2
